@@ -1,0 +1,407 @@
+body {
+    margin: 0;
+    background: #f4f7fc;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    width: 280px;
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            180deg,
+            #12315e 0%,
+            #1b4b89 100%
+        );
+
+    position: relative;
+    overflow: hidden;
+
+    color: white;
+
+    box-shadow: 3px 0 10px rgba(0,0,0,0.15);
+
+    transition: width 0.3s ease;
+}
+
+/* Imagem de fundo */
+
+.sidebar::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background-image:
+        url("../assets/images/maintenance-bg.png");
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+    opacity: 0.30;
+
+    filter: grayscale(100%);
+
+    pointer-events: none;
+
+    z-index: 1;
+}
+
+/* Conteúdo acima da imagem */
+
+.logo,
+.sidebar nav {
+    position: relative;
+    z-index: 2;
+}
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+    padding: 25px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.10);
+}
+
+.logo i {
+    font-size: 40px;
+}
+
+.logo h4 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.logo small {
+    color: rgba(255,255,255,0.70);
+}
+
+/* =========================
+   MENU
+========================= */
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.sidebar nav a {
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 16px 25px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    white-space: nowrap;
+
+    transition: all 0.3s ease;
+}
+
+.sidebar nav a i {
+
+    min-width: 20px;
+
+    text-align: center;
+}
+
+.sidebar nav a:hover {
+
+    background: rgba(255,255,255,0.08);
+}
+
+.sidebar nav a.active {
+
+    background: #1f6dff;
+
+    border-left: 4px solid #ffffff;
+}
+
+/* =========================
+   SIDEBAR RECOLHIDA
+========================= */
+
+.sidebar.collapsed {
+
+    width: 80px;
+}
+
+.sidebar.collapsed .logo {
+
+    justify-content: center;
+}
+
+.sidebar.collapsed .logo-text {
+
+    display: none;
+}
+
+.sidebar.collapsed nav a {
+
+    justify-content: center;
+}
+
+.sidebar.collapsed nav a span {
+
+    display: none;
+}
+
+/* =========================
+   CONTEÚDO
+========================= */
+
+.content {
+    flex: 1;
+    padding: 30px;
+}
+
+/* =========================
+   TOPO
+========================= */
+
+.topbar {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.topbar-left {
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.topbar h1 {
+
+    margin: 0;
+}
+
+.topbar p {
+
+    color: #6c757d;
+    margin: 0;
+}
+
+/* =========================
+   BOTÃO MENU
+========================= */
+
+.menu-toggle {
+
+    width: 45px;
+    height: 45px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: white;
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.1);
+
+    transition: all 0.3s ease;
+}
+
+.menu-toggle:hover {
+
+    background: #f0f4ff;
+
+    transform: scale(1.05);
+}
+
+/* =========================
+   USUÁRIO
+========================= */
+
+.user-box {
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    font-weight: 600;
+}
+
+/* =========================
+   KPI CARDS
+========================= */
+
+.kpi {
+
+    border: none;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,0.08);
+
+    transition: transform 0.3s ease;
+}
+
+.kpi:hover {
+
+    transform: translateY(-3px);
+}
+
+.kpi h6 {
+
+    color: #6c757d;
+}
+
+.kpi h2 {
+
+    margin-top: 10px;
+
+    color: #1f6dff;
+}
+
+/* =========================
+   FILTROS
+========================= */
+
+.card {
+
+    border: none;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,0.06);
+}
+
+/* =========================
+   TABELA
+========================= */
+
+.table {
+
+    margin-bottom: 0;
+}
+
+.table thead {
+
+    background: #f8f9fa;
+}
+
+.table th {
+
+    font-weight: 600;
+}
+
+.table-hover tbody tr:hover {
+
+    background: #f5f8ff;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.badge-status {
+
+    padding: 8px 12px;
+
+    border-radius: 20px;
+
+    font-size: 0.85rem;
+
+    color: white;
+
+    display: inline-block;
+}
+
+.apontado {
+
+    background: #198754;
+}
+
+.nao-apontado {
+
+    background: #dc3545;
+}
+
+.andamento {
+
+    background: #ffc107;
+
+    color: #000;
+}
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+@media (max-width: 992px) {
+
+    .sidebar {
+
+        width: 80px;
+    }
+
+    .logo-text {
+
+        display: none;
+    }
+
+    .sidebar nav a {
+
+        justify-content: center;
+    }
+
+    .sidebar nav a span {
+
+        display: none;
+    }
+
+    .content {
+
+        padding: 20px;
+    }
+
+    .topbar {
+
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
