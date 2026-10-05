@@ -1,2 +1,22 @@
 openspec
 .agents
+
+# Ambiente e segredos
+.env
+
+# Python / Caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+ENV/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDEs e logs
+.vscode/
+.idea/
+*.log
