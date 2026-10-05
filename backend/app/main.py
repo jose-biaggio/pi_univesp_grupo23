@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.database import check_database_connection
+from app.routers import auth
 
 app = FastAPI(
     title="Manutenção Sync API",
@@ -18,6 +18,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth.router)
+
 
 @app.get("/api/", tags=["Root"])
 def root():
@@ -26,14 +28,4 @@ def root():
         "version": "1.0.0",
         "status": "online",
         "message": "Servidor backend FastAPI",
-    }
-
-
-@app.get("/api/health", tags=["Health"])
-def health_check():
-    db_status = check_database_connection()
-    return {
-        "status": "ok",
-        "api": "healthy",
-        "database": db_status,
     }

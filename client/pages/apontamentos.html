@@ -8,171 +8,167 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <link rel="stylesheet" href="../css/apontamentos.css">
 </head>
 
 <body>
 
-<div class="wrapper">
+    <div class="wrapper">
 
-    <!-- SIDEBAR -->
+        <!-- SIDEBAR -->
 
-    <aside class="sidebar">
+        <aside class="sidebar">
 
-        <div class="logo">
+            <div class="logo">
 
-            <i class="fa-solid fa-gears"></i>
+                <i class="fa-solid fa-gears"></i>
 
-            <div class="logo-text">
+                <div class="logo-text">
 
-                <h4>Manutenção Sync</h4>
-
-            </div>
-
-        </div>
-
-        <nav>
-
-            <a href="#">
-                <i class="fa-solid fa-house"></i>
-                <span>Dashboard</span>
-            </a>
-
-            <a href="programacao.html">
-                <i class="fa-solid fa-calendar-days"></i>
-                <span>Programação</span>
-            </a>
-
-            <a href="#" class="active">
-                <i class="fa-solid fa-clipboard-check"></i>
-                <span>Apontamentos</span>
-            </a>
-
-            <a href="indicadores.html">
-                <i class="fa-solid fa-chart-column"></i>
-                <span>Indicadores</span>
-            </a>
-
-        </nav>
-
-    </aside>
-
-    <!-- CONTENT -->
-
-    <main class="content">
-
-        <header class="topbar">
-
-            <div class="topbar-left">
-
-                <button id="toggleSidebar" class="menu-toggle">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-
-                <div>
-
-                    <h1>Apontamentos de Manutenção</h1>
-
-                    <p>
-                        Registre e acompanhe os apontamentos das ordens
-                    </p>
+                    <h4>Manutenção Sync</h4>
 
                 </div>
 
             </div>
 
-            <div class="user-box">
+            <nav>
 
-                <i class="fa-solid fa-bell"></i>
+                <a href="#">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Dashboard</span>
+                </a>
 
-                <span>José Biaggio</span>
+                <a href="programacao.html">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Programação</span>
+                </a>
 
-            </div>
+                <a href="#" class="active">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    <span>Apontamentos</span>
+                </a>
 
-        </header>
+                <a href="indicadores.html">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>Indicadores</span>
+                </a>
 
-        <!-- KPIs -->
+            </nav>
 
-        <section class="row g-4 mb-4">
+        </aside>
 
-            <div class="col-md-3">
-                <div class="card kpi">
-                    <h6>Apontamentos Hoje</h6>
-                    <h2>12</h2>
-                </div>
-            </div>
+        <!-- CONTENT -->
 
-            <div class="col-md-3">
-                <div class="card kpi">
-                    <h6>Horas Apontadas</h6>
-                    <h2>48 h</h2>
-                </div>
-            </div>
+        <main class="content">
 
-            <div class="col-md-3">
-                <div class="card kpi">
-                    <h6>Ordens Apontadas</h6>
-                    <h2>10</h2>
-                </div>
-            </div>
+            <header class="topbar">
 
-            <div class="col-md-3">
-                <div class="card kpi">
-                    <h6>Aderência Diária</h6>
-                    <h2>80%</h2>
-                </div>
-            </div>
+                <div class="topbar-left">
 
-        </section>
+                    <button id="toggleSidebar" class="menu-toggle">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
 
-        <!-- FILTROS -->
+                    <div>
 
-        <div class="card mb-4">
+                        <h1>Apontamentos de Manutenção</h1>
 
-            <div class="card-body">
-
-                <div class="row g-3">
-
-                    <div class="col-md-4">
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Pesquisar ordem">
+                        <p>
+                            Registre e acompanhe os apontamentos das ordens
+                        </p>
 
                     </div>
 
-                    <div class="col-md-3">
+                </div>
 
-                        <select class="form-select">
+                <div class="user-box">
 
-                            <option>Todos</option>
-                            <option>Concluído</option>
-                            <option>Parcial</option>
-                            <option>Em Andamento</option>
+                    <i class="fa-solid fa-bell"></i>
 
-                        </select>
+                    <span>José Biaggio</span>
 
+                </div>
+
+            </header>
+
+            <!-- KPIs -->
+
+            <section class="row g-4 mb-4">
+
+                <div class="col-md-3">
+                    <div class="card kpi">
+                        <h6>Apontamentos Hoje</h6>
+                        <h2>12</h2>
                     </div>
+                </div>
 
-                    <div class="col-md-3">
-
-                        <input
-                            type="date"
-                            class="form-control">
-
+                <div class="col-md-3">
+                    <div class="card kpi">
+                        <h6>Horas Apontadas</h6>
+                        <h2>48 h</h2>
                     </div>
+                </div>
 
-                    <div class="col-md-2">
+                <div class="col-md-3">
+                    <div class="card kpi">
+                        <h6>Ordens Apontadas</h6>
+                        <h2>10</h2>
+                    </div>
+                </div>
 
-                        <button class="btn btn-primary w-100">
+                <div class="col-md-3">
+                    <div class="card kpi">
+                        <h6>Aderência Diária</h6>
+                        <h2>80%</h2>
+                    </div>
+                </div>
 
-                            Atualizar
+            </section>
 
-                        </button>
+            <!-- FILTROS -->
+
+            <div class="card mb-4">
+
+                <div class="card-body">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-4">
+
+                            <input type="text" class="form-control" placeholder="Pesquisar ordem">
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <select class="form-select">
+
+                                <option>Todos</option>
+                                <option>Concluído</option>
+                                <option>Parcial</option>
+                                <option>Em Andamento</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <input type="date" class="form-control">
+
+                        </div>
+
+                        <div class="col-md-2">
+
+                            <button class="btn btn-primary w-100">
+
+                                Atualizar
+
+                            </button>
+
+                        </div>
 
                     </div>
 
@@ -180,135 +176,119 @@
 
             </div>
 
-        </div>
+            <!-- TABELA -->
 
-        <!-- TABELA -->
+            <div class="card">
 
-        <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
 
-            <div class="card-header d-flex justify-content-between align-items-center">
+                    <strong>Apontamentos de Manutenção</strong>
 
-                <strong>Apontamentos de Manutenção</strong>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalApontamento">
 
-                <button
-                    class="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalApontamento">
+                        <i class="fa-solid fa-plus"></i>
 
-                    <i class="fa-solid fa-plus"></i>
+                        Novo Apontamento
 
-                    Novo Apontamento
-
-                </button>
-
-            </div>
-
-            <div class="table-responsive">
-
-                <table class="table table-hover align-middle">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Data</th>
-                            <th>Ordem</th>
-                            <th>Descrição</th>
-                            <th>Operação</th>
-                            <th>Centro</th>
-                            <th>Horas</th>
-                            <th>Operador</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="tabelaApontamentos">
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </main>
-
-</div>
-
-<!-- MODAL -->
-
-<div
-    class="modal fade"
-    id="modalApontamento"
-    tabindex="-1">
-
-    <div class="modal-dialog">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-
-                <h5>Novo Apontamento</h5>
-
-                <button
-                    class="btn-close"
-                    data-bs-dismiss="modal"></button>
-
-            </div>
-
-            <div class="modal-body">
-
-                <div class="mb-3">
-
-                    <label>Ordem</label>
-
-                    <input
-                        type="text"
-                        class="form-control">
+                    </button>
 
                 </div>
 
-                <div class="mb-3">
+                <div class="table-responsive">
 
-                    <label>Horas Apontadas</label>
+                    <table class="table table-hover align-middle">
 
-                    <input
-                        type="number"
-                        class="form-control">
+                        <thead>
 
-                </div>
+                            <tr>
 
-                <div class="mb-3">
+                                <th>Data</th>
+                                <th>Ordem</th>
+                                <th>Descrição</th>
+                                <th>Operação</th>
+                                <th>Centro</th>
+                                <th>Horas</th>
+                                <th>Operador</th>
+                                <th>Status</th>
+                                <th>Ações</th>
 
-                    <label>Observação</label>
+                            </tr>
 
-                    <textarea
-                        class="form-control"></textarea>
+                        </thead>
+
+                        <tbody id="tabelaApontamentos">
+
+                        </tbody>
+
+                    </table>
 
                 </div>
 
             </div>
 
-            <div class="modal-footer">
+        </main>
 
-                <button
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
+    </div>
 
-                    Cancelar
+    <!-- MODAL -->
 
-                </button>
+    <div class="modal fade" id="modalApontamento" tabindex="-1">
 
-                <button
-                    class="btn btn-primary">
+        <div class="modal-dialog">
 
-                    Salvar
+            <div class="modal-content">
 
-                </button>
+                <div class="modal-header">
+
+                    <h5>Novo Apontamento</h5>
+
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+
+                        <label>Ordem</label>
+
+                        <input type="text" class="form-control">
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Horas Apontadas</label>
+
+                        <input type="number" class="form-control">
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Observação</label>
+
+                        <textarea class="form-control"></textarea>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                        Cancelar
+
+                    </button>
+
+                    <button class="btn btn-primary">
+
+                        Salvar
+
+                    </button>
+
+                </div>
 
             </div>
 
@@ -316,11 +296,10 @@
 
     </div>
 
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-
-<script src="../js/apontamentos.js"></script>
+    <script src="../js/apontamentos.js"></script>
 
 </body>
+
 </html>

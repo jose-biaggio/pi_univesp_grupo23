@@ -4,33 +4,141 @@
 
 O **Manutenção Sync** é uma plataforma web voltada para o registro, controle e monitoramento de atividades de manutenção. O objetivo principal é solucionar dificuldades de integração e compartilhamento de dados entre diferentes sistemas, proporcionando confiabilidade nas informações e auxílio na tomada de decisões gerenciais.
 
------
+---
 
 ## Tecnologias Utilizadas
 
-  - **Frontend:** HTML, CSS, JavaScript e Bootstrap
-  - **Backend:** Python e FastAPI (API REST em JSON)
-  - **Banco de Dados:** MariaDB (integração via SQLAlchemy e PyMySQL)
-  - **Análise de Dados:** Google Looker Studio
-  - **Versionamento:** Git e GitHub
-  - **Hospedagem / Deploy:** Railway
+- **Frontend:** HTML5, CSS3, JavaScript Vanilla e Bootstrap 5
+- **Backend:** Python 3.11+ e FastAPI (API REST em JSON)
+- **Banco de Dados:** MariaDB 10.11 LTS (integração via SQLAlchemy e PyMySQL)
+- **Migrações de Banco:** Alembic
+- **Proxy Reverso & Gateway:** Nginx
+- **Orquestração Local:** Docker e Docker Compose
+- **Análise de Dados:** Google Looker Studio
+- **Versionamento:** Git e GitHub
+- **Hospedagem / Deploy:** Railway
 
------
+---
 
-## Arquitetura do Sistema
+## Como Executar o Projeto Localmente
 
-A solução é dividida em camadas funcionais:
+### Pré-requisitos
+- [Git](https://git-scm.com/)
+- [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/)
 
-1.  **Frontend (Interface Web):** Interface responsiva e intuitiva para consulta de ordens programadas e registro de apontamentos.
-2.  **Backend (API REST):** Desenvolvido em FastAPI, responsável pelo processamento de regras de negócio, validações e ponte de comunicação com o banco de dados.
-3.  **Banco de Dados:** Instância MariaDB responsável por armazenar registros de programação, ordens, operações e apontamentos.
-4.  **Dashboards & Relatórios:** Integração com o Google Looker Studio para exibição de indicadores de desempenho e relatórios gerenciais.
+### 1. Clonar o Repositório
+```bash
+git clone https://github.com/jose-biaggio/pi_univesp_grupo23.git
+cd pi_univesp_grupo23
+```
 
------
+### 2. Configurar o Ambiente (.env)
+Copie o arquivo de exemplo para criar o seu `.env`:
+```bash
+cp .env.example .env
+```
 
-## Módulos e Funcionalidades principais
+### 3. Iniciar a Aplicação com Docker
+Para construir as imagens e subir os contêineres em segundo plano:
+```bash
+docker-compose up -d --build
+```
 
-  - **Autenticação:** Tela de login para controle de acesso seguro dos usuários.
-  - **Programação de Manutenção:** Consulta e acompanhamento do status de ordens e operações programadas.
-  - **Registro de Apontamentos:** Lançamento das horas trabalhadas nas atividades de manutenção e histórico de registros.
-  - **Dashboards de Indicadores:** Monitoramento de metas e resultados como aderência ao planejamento, backlog e horas por tipo de manutenção.
+### 4. Verificar o Status dos Contêineres
+```bash
+docker-compose ps
+```
+
+### 5. Encerrar os Contêineres
+Para parar os serviços:
+```bash
+docker-compose down
+```
+
+---
+
+## URLs de Acesso
+
+Com os contêineres rodando, acesse no navegador:
+
+- **Frontend (Aplicação Web):** [http://localhost](http://localhost) (redireciona para o login)
+- **Documentação Interativa da API (Swagger UI):** [http://localhost/docs](http://localhost/docs)
+- **Verificação de Saúde (Health Check):** [http://localhost/api/health](http://localhost/api/health)
+
+---
+
+## Comandos do Banco de Dados e Migrações (Alembic)
+
+O `alembic upgrade head` já é executado **automaticamente** na inicialização do contêiner `backend`. Caso queira gerenciar as migrações manualmente via terminal:
+
+- **Aplicar migrações pendentes:**
+  ```bash
+  docker-compose exec backend alembic upgrade head
+  ```
+- **Gerar nova migração após alterar models no SQLAlchemy:**
+  ```bash
+  docker-compose exec backend alembic revision --autogenerate -m "descricao_da_alteracao"
+  ```
+- **Verificar a versão atual aplicada no banco:**
+  ```bash
+  docker-compose exec backend alembic current
+  ```
+- **Desfazer a última migração (Rollback):**
+  ```bash
+  docker-compose exec backend alembic downgrade -1
+  ```
+- **Acessar o terminal interativo do MariaDB:**
+  ```bash
+  docker-compose exec db mariadb -u sync_user -psync_password manutencao_sync
+  ```
+
+---
+
+## Carga Inicial de Dados (Seed)
+
+Para popular a base de dados com o usuário administrador padrão:
+
+```bash
+docker-compose exec backend python -m app.seed
+```
+
+> **Credenciais de Acesso Inicial:**
+> - **Usuário:** `admin`
+> - **Senha:** `admin123`
+> - **Perfil:** `ADMIN`
+
+O script é **idempotente** (se o usuário já existir, a operação não duplicará o registro).
+
+### Testar a Autenticação via cURL:
+
+1. **Realizar Login e Obter o Token JWT:**
+```bash
+curl -X POST http://localhost/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"usuario": "admin", "senha": "admin123"}'
+```
+*Retorno:*
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "bearer",
+  "mensagem": "Login realizado com sucesso",
+  "usuario": {
+    "id": 1,
+    "nome": "Administrador do Sistema",
+    "usuario": "admin",
+    "email": "admin@manutencaosync.com.br",
+    "perfil": "ADMIN",
+    "ativo": true
+  }
+}
+```
+
+2. **Acessar Rota Protegida com o Bearer Token:**
+```bash
+TOKEN=$(curl -s -X POST http://localhost/api/auth/login -H "Content-Type: application/json" -d '{"usuario": "admin", "senha": "admin123"}' | grep -o '"access_token":"[^"]*' | cut -d'"' -f4)
+
+curl -X GET http://localhost/api/auth/me \
+  -H "Authorization: Bearer $TOKEN"
+```
+
