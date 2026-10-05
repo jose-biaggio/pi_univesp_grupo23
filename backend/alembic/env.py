@@ -12,7 +12,7 @@ if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
 from app.database import Base, DATABASE_URL
-
+import app.models
 config = context.config
 
 if DATABASE_URL:
