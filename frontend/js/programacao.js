@@ -83,7 +83,7 @@ function renderizarTabela(ordens) {
             <td>${formatarData(ordem.data_programada)}</td>
             <td>${obterBadgeStatus(ordem.status)}</td>
             <td>
-                <button class="btn btn-outline-primary btn-sm" title="Editar ordem" onclick="alert('Edição da ordem ' + '${ordem.numero_ordem}' + ' em desenvolvimento.')">
+                <button class="btn btn-outline-primary btn-sm" title="Editar ordem" onclick="alert('Edição da ordem ' + '${ordem.numero_ordem}')">
                     <i class="fa-solid fa-pen"></i>
                 </button>
             </td>
