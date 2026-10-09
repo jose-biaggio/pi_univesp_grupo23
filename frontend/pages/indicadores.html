@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores de Manutenção | Manutenção Sync</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/indicadores.css">
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <app-sidebar active="indicadores"></app-sidebar>
+
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="content">
+
+            <!-- TOPO -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+                    <button id="toggleSidebar" class="menu-toggle">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div>
+                        <h1>Indicadores de Manutenção</h1>
+                        <p>Acompanhamento de KPIs, Aderência da Programação e Backlog Operacional</p>
+                    </div>
+                </div>
+
+                <div class="user-box">
+                    <i class="fa-solid fa-user-circle"></i>
+                    <span id="usuarioLogadoNome">Carregando...</span>
+                    <button id="btnSair" class="btn btn-outline-secondary btn-sm ms-2" title="Sair do sistema">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+
+            </header>
+
+            <!-- KPIs PRINCIPAIS -->
+            <section class="row g-4 mb-4">
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card kpi">
+                        <h6>Total de Ordens</h6>
+                        <h2 id="kpiTotalOrdens">0</h2>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card kpi">
+                        <h6>Horas Programadas</h6>
+                        <h2 id="kpiHorasProgramadas">0 h</h2>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card kpi">
+                        <h6>Backlog (Pendentes)</h6>
+                        <h2 id="kpiBacklog">0</h2>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card kpi">
+                        <h6>Taxa de Conclusão</h6>
+                        <h2 id="kpiTaxaConclusao">0%</h2>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- SEÇÕES DE ANÁLISE -->
+            <div class="row g-4 mb-4">
+
+                <!-- Distribuição por Status -->
+                <div class="col-lg-6">
+                    <div class="card bi-card h-100 p-4">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fa-solid fa-chart-pie me-2 text-primary"></i>Distribuição por Status
+                        </h5>
+                        <div class="d-flex flex-column gap-3 mt-2" id="containerStatus">
+                            <div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-secondary">Não Apontadas</span>
+                                    <strong id="qtdNaoApontadas">0</strong>
+                                </div>
+                                <div class="progress progress-custom">
+                                    <div id="barraNaoApontadas" class="progress-bar bg-secondary" style="width: 0%">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-warning">Em Andamento</span>
+                                    <strong id="qtdEmAndamento">0</strong>
+                                </div>
+                                <div class="progress progress-custom">
+                                    <div id="barraEmAndamento" class="progress-bar bg-warning" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-success">Concluídas</span>
+                                    <strong id="qtdConcluidas">0</strong>
+                                </div>
+                                <div class="progress progress-custom">
+                                    <div id="barraConcluidas" class="progress-bar bg-success" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumo por Centro de Trabalho -->
+                <div class="col-lg-6">
+                    <div class="card bi-card h-100 p-4">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fa-solid fa-industry me-2 text-primary"></i>Ordens por Centro de Trabalho
+                        </h5>
+                        <ul class="list-group list-group-flush" id="listaCentros">
+                            <li class="list-group-item text-muted">Carregando centros...</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- PAINEL DE INTEGRAÇÃO LOOKER STUDIO -->
+            <div class="card bi-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fa-solid fa-chart-line me-2 text-primary"></i>Painel Gerencial Google Looker Studio
+                    </h5>
+                    <span class="badge bg-primary">Integração BI</span>
+                </div>
+                <div class="bi-embed-container">
+                    <i class="fa-solid fa-chart-simple fa-3x text-secondary mb-3"></i>
+                    <h5>Visualização de BI Integrada</h5>
+                    <p class="text-muted max-w-500 mb-3" style="max-width: 540px;">
+                        Os dados do MariaDB estão estruturados com índices e chave estrangeira para conexão direta com o
+                        Google Looker Studio via conector MySQL.
+                    </p>
+                    <a href="https://lookerstudio.google.com" target="_blank" rel="noopener noreferrer"
+                        class="btn btn-outline-primary">
+                        <i class="fa-solid fa-arrow-up-right-from-square me-2"></i>Acessar Painel no Looker Studio
+                    </a>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- Script Principal como Módulo ES -->
+    <script type="module" src="../js/indicadores.js"></script>
+
+</body>
+
+</html>

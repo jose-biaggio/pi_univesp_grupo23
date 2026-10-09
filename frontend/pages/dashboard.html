@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard BI | Manutenção Sync</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <app-sidebar active="dashboard"></app-sidebar>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="content">
+
+            <!-- TOPO -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+                    <button id="toggleSidebar" class="menu-toggle">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div>
+                        <h1>Dashboard Geral de Manutenção</h1>
+                        <p>Visão executiva e relatórios interativos via Google Looker Studio</p>
+                    </div>
+                </div>
+
+                <div class="user-box">
+                    <i class="fa-solid fa-user-circle"></i>
+                    <span id="usuarioLogadoNome">Carregando...</span>
+                    <button id="btnSair" class="btn btn-outline-secondary btn-sm ms-2" title="Sair do sistema">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+
+            </header>
+
+            <div class="dashboard-toolbar">
+                <div class="d-flex gap-2">
+                    <button id="btnConfigLink" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#modalConfigLink" title="Configurar Link do Looker Studio">
+                        <i class="fa-solid fa-gear me-1"></i> Configurar Link
+                    </button>
+
+                    <button id="btnRecarregarIframe" class="btn btn-outline-secondary btn-sm"
+                        title="Recarregar relatório">
+                        <i class="fa-solid fa-rotate-right me-1"></i> Recarregar
+                    </button>
+                </div>
+            </div>
+
+            <div class="iframe-container" id="containerIframe">
+                <iframe id="lookerIframe" src="" allowfullscreen
+                    sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+                </iframe>
+            </div>
+
+        </main>
+
+    </div>
+
+    <div class="modal fade" id="modalConfigLink" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fa-solid fa-link me-2 text-primary"></i>Configurar Link do Looker Studio
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form id="formConfigLink">
+                    <div class="modal-body">
+                        <p class="text-muted small">
+                            Insira a URL de incorporação (Embed URL) do seu relatório do Google Looker Studio.
+                        </p>
+                        <div class="mb-3">
+                            <label for="inputUrlLooker" class="form-label">URL de Incorporação (Embed URL) *</label>
+                            <input type="url" id="inputUrlLooker" class="form-control"
+                                placeholder="https://lookerstudio.google.com/embed/reporting/..." required>
+                        </div>
+                        <div class="form-text">
+                            No Looker Studio: clique em <strong>Compartilhar</strong> &gt; <strong>Incorporar
+                                relatório</strong> &gt; marque <strong>Incorporação de URL</strong> e cole o link acima.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnRestaurarPadrao"
+                            class="btn btn-outline-secondary me-auto">Restaurar Exemplo</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Salvar e Carregar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/dashboard.js"></script>
+
+</body>
+
+</html>

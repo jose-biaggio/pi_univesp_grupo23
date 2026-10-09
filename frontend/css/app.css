@@ -4,36 +4,38 @@ body {
     font-family: "Segoe UI", sans-serif;
 }
 
-/* =========================
-   LAYOUT
-========================= */
 
 .wrapper {
     display: flex;
     min-height: 100vh;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+app-sidebar {
+    display: contents;
+}
+
+app-sidebar:not(:defined) {
+    display: block;
+    width: 280px;
+    min-height: 100vh;
+    background: #12315e;
+}
 
 .sidebar {
     width: 280px;
     min-height: 100vh;
 
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             #12315e 0%,
-            #1b4b89 100%
-        );
+            #1b4b89 100%);
 
     position: relative;
     overflow: hidden;
 
     color: white;
 
-    box-shadow: 3px 0 10px rgba(0,0,0,0.15);
+    box-shadow: 3px 0 10px rgba(0, 0, 0, 0.15);
 
     transition: width 0.3s ease;
 }
@@ -84,7 +86,7 @@ body {
     gap: 15px;
 
     border-bottom:
-        1px solid rgba(255,255,255,0.10);
+        1px solid rgba(255, 255, 255, 0.10);
 }
 
 .logo i {
@@ -97,7 +99,7 @@ body {
 }
 
 .logo small {
-    color: rgba(255,255,255,0.70);
+    color: rgba(255, 255, 255, 0.70);
 }
 
 /* =========================
@@ -136,7 +138,7 @@ body {
 
 .sidebar nav a:hover {
 
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .sidebar nav a.active {
@@ -235,7 +237,7 @@ body {
     font-size: 18px;
 
     box-shadow:
-        0 2px 8px rgba(0,0,0,0.1);
+        0 2px 8px rgba(0, 0, 0, 0.1);
 
     transition: all 0.3s ease;
 }
@@ -273,7 +275,7 @@ body {
     border-radius: 15px;
 
     box-shadow:
-        0 5px 15px rgba(0,0,0,0.08);
+        0 5px 15px rgba(0, 0, 0, 0.08);
 
     transition: transform 0.3s ease;
 }
@@ -306,7 +308,7 @@ body {
     border-radius: 15px;
 
     box-shadow:
-        0 5px 15px rgba(0,0,0,0.06);
+        0 5px 15px rgba(0, 0, 0, 0.06);
 }
 
 /* =========================
@@ -404,4 +406,22 @@ body {
         align-items: flex-start;
         gap: 15px;
     }
+}
+
+/* =========================
+   STATUS BADGES / HELPERS
+========================= */
+.status-concluido {
+    background: #198754;
+    color: #fff;
+}
+
+.status-parcial {
+    background: #ffc107;
+    color: #000;
+}
+
+.status-andamento {
+    background: #0d6efd;
+    color: #fff;
 }

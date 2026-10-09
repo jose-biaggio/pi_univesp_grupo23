@@ -10,54 +10,14 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    <link rel="stylesheet" href="../css/apontamentos.css">
+    <link rel="stylesheet" href="../css/app.css">
 </head>
 
 <body>
 
     <div class="wrapper">
 
-        <!-- SIDEBAR -->
-
-        <aside class="sidebar">
-
-            <div class="logo">
-
-                <i class="fa-solid fa-gears"></i>
-
-                <div class="logo-text">
-
-                    <h4>Manutenção Sync</h4>
-
-                </div>
-
-            </div>
-
-            <nav>
-
-                <a href="#">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Dashboard</span>
-                </a>
-
-                <a href="programacao.html">
-                    <i class="fa-solid fa-calendar-days"></i>
-                    <span>Programação</span>
-                </a>
-
-                <a href="#" class="active">
-                    <i class="fa-solid fa-clipboard-check"></i>
-                    <span>Apontamentos</span>
-                </a>
-
-                <a href="indicadores.html">
-                    <i class="fa-solid fa-chart-column"></i>
-                    <span>Indicadores</span>
-                </a>
-
-            </nav>
-
-        </aside>
+        <app-sidebar active="apontamentos"></app-sidebar>
 
         <!-- CONTENT -->
 
@@ -87,7 +47,11 @@
 
                     <i class="fa-solid fa-bell"></i>
 
-                    <span>José Biaggio</span>
+                    <span id="usuarioLogadoNome">Carregando...</span>
+
+                    <button id="btnSair" class="btn btn-outline-secondary btn-sm ms-2" title="Sair do sistema">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
 
                 </div>
 
@@ -296,9 +260,7 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="../js/apontamentos.js"></script>
+    <script type="module" src="../js/apontamentos.js"></script>
 
 </body>
 

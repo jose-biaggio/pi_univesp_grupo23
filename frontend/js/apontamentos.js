@@ -1,14 +1,8 @@
-const toggleSidebar =
-document.getElementById("toggleSidebar");
+import { Auth } from "./auth.js";
+import { bootstrap, inicializarLayout } from "./app.js";
 
-const sidebar =
-document.querySelector(".sidebar");
-
-toggleSidebar.addEventListener("click", () => {
-
-    sidebar.classList.toggle("collapsed");
-
-});
+Auth.exigirAutenticacao();
+inicializarLayout();
 
 const apontamentos = [
 

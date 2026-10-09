@@ -13,66 +13,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="../css/programacao.css">
+    <link rel="stylesheet" href="../css/app.css">
 </head>
 
 <body>
 
     <div class="wrapper">
 
-        <!-- SIDEBAR -->
-
-        <aside class="sidebar">
-
-            <div class="logo">
-
-                <i class="fa-solid fa-gears"></i>
-
-                <div class="logo-text">
-
-                    <h4>Manutenção Sync</h4>
-
-                </div>
-
-            </div>
-
-            <nav>
-
-                <a href="#">
-
-                    <i class="fa-solid fa-house"></i>
-
-                    <span>Dashboard</span>
-
-                </a>
-
-                <a href="#" class="active">
-
-                    <i class="fa-solid fa-calendar-days"></i>
-
-                    <span>Programação</span>
-
-                </a>
-
-                <a href="apontamentos.html">
-
-                    <i class="fa-solid fa-clipboard-check"></i>
-
-                    <span>Apontamentos</span>
-
-                </a>
-
-                <a href="indicadores.html">
-
-                    <i class="fa-solid fa-chart-column"></i>
-
-                    <span>Indicadores</span>
-
-                </a>
-
-            </nav>
-
-        </aside>
+        <app-sidebar active="programacao"></app-sidebar>
 
         <!-- CONTEÚDO -->
 
@@ -104,9 +52,13 @@
 
                 <div class="user-box">
 
-                    <i class="fa-solid fa-bell"></i>
+                    <i class="fa-solid fa-user-circle"></i>
 
-                    <span>José da Silva</span>
+                    <span id="usuarioLogadoNome">Carregando...</span>
+
+                    <button id="btnSair" class="btn btn-outline-secondary btn-sm ms-2" title="Sair do sistema">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
 
                 </div>
 
@@ -122,7 +74,7 @@
 
                         <h6>Ordens Programadas</h6>
 
-                        <h2>35</h2>
+                        <h2 id="kpiOrdensProgramadas">0</h2>
 
                     </div>
 
@@ -134,7 +86,7 @@
 
                         <h6>Horas Programadas</h6>
 
-                        <h2>240 h</h2>
+                        <h2 id="kpiHorasProgramadas">0 h</h2>
 
                     </div>
 
@@ -146,7 +98,7 @@
 
                         <h6>Horas Apontadas</h6>
 
-                        <h2>180 h</h2>
+                        <h2 id="kpiHorasApontadas">0 h</h2>
 
                     </div>
 
@@ -158,7 +110,7 @@
 
                         <h6>Aderência</h6>
 
-                        <h2>75%</h2>
+                        <h2 id="kpiAderencia">0%</h2>
 
                     </div>
 
@@ -176,17 +128,20 @@
 
                         <div class="col-md-4">
 
-                            <input type="text" class="form-control" placeholder="Pesquisar ordem">
+                            <input type="text" id="filtroPesquisa" class="form-control"
+                                placeholder="Pesquisar por número ou descrição">
 
                         </div>
 
                         <div class="col-md-3">
 
-                            <select class="form-select">
+                            <select id="filtroStatus" class="form-select">
 
-                                <option>Todos os Status</option>
-                                <option>Apontado</option>
-                                <option>Não Apontado</option>
+                                <option value="">Todos os Status</option>
+                                <option value="NAO_APONTADO">Não Apontado</option>
+                                <option value="EM_ANDAMENTO">Em Andamento</option>
+                                <option value="CONCLUIDO">Concluído</option>
+                                <option value="CANCELADO">Cancelado</option>
 
                             </select>
 
@@ -194,9 +149,9 @@
 
                         <div class="col-md-3">
 
-                            <select class="form-select">
+                            <select id="filtroCentro" class="form-select">
 
-                                <option>Todos os Centros</option>
+                                <option value="">Todos os Centros</option>
 
                             </select>
 
@@ -204,9 +159,9 @@
 
                         <div class="col-md-2">
 
-                            <button class="btn btn-primary w-100">
+                            <button id="btnAtualizarFiltro" class="btn btn-primary w-100">
 
-                                Atualizar
+                                <i class="fa-solid fa-filter me-1"></i> Filtrar
 
                             </button>
 
@@ -222,9 +177,13 @@
 
             <div class="card">
 
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
 
                     <strong>Ordens de Manutenção</strong>
+
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovaOrdem">
+                        <i class="fa-solid fa-plus me-1"></i> Nova Ordem
+                    </button>
 
                 </div>
 
@@ -241,7 +200,7 @@
                                 <th>Operação</th>
                                 <th>Centro de Trabalho</th>
                                 <th>Programado</th>
-                                <th>Apontado</th>
+                                <th>Data Programada</th>
                                 <th>Status</th>
                                 <th>Ações</th>
 
@@ -265,11 +224,66 @@
 
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- MODAL NOVA ORDEM -->
+    <div class="modal fade" id="modalNovaOrdem" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fa-solid fa-clipboard-list me-2"></i>Nova Ordem de Manutenção</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form id="formNovaOrdem">
+                    <div class="modal-body">
+                        <div id="msgErroModal" class="alert alert-danger d-none" role="alert"></div>
 
-    <!-- JS -->
-    <script src="../js/programacao.js"></script>
+                        <div class="mb-3">
+                            <label for="campoNumeroOrdem" class="form-label">Número da Ordem *</label>
+                            <input type="text" id="campoNumeroOrdem" class="form-control" placeholder="Ex: 10001"
+                                required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="campoDescricao" class="form-label">Descrição da Atividade *</label>
+                            <input type="text" id="campoDescricao" class="form-control"
+                                placeholder="Ex: Troca de Rolamento do Motor" required>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                                <label for="campoOperacao" class="form-label">Operação</label>
+                                <input type="text" id="campoOperacao" class="form-control" value="0010" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="campoCentroTrabalho" class="form-label">Centro de Trabalho *</label>
+                                <input type="text" id="campoCentroTrabalho" class="form-control"
+                                    placeholder="Ex: Oficina Mecânica" required>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                                <label for="campoHorasProgramadas" class="form-label">Horas Programadas *</label>
+                                <input type="number" step="0.5" min="0.1" id="campoHorasProgramadas"
+                                    class="form-control" placeholder="Ex: 8.0" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="campoDataProgramada" class="form-label">Data Programada *</label>
+                                <input type="datetime-local" id="campoDataProgramada" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="btnSalvarOrdem" class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Salvar Ordem
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/programacao.js"></script>
 
 </body>
 

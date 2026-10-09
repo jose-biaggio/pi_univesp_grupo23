@@ -1,0 +1,33 @@
+@import url("app.css");
+
+.bi-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.bi-embed-container {
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 10px;
+    text-align: center;
+    padding: 3rem 1.5rem;
+}
+
+.progress-custom {
+    height: 10px;
+    border-radius: 6px;
+    background-color: #e2e8f0;
+}

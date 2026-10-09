@@ -49,7 +49,7 @@ document
                 localStorage.setItem("access_token", data.access_token);
                 localStorage.setItem("token_type", data.token_type);
                 localStorage.setItem("usuario_logado", JSON.stringify(data.usuario));
-                window.location.href = "apontamentos.html";
+                window.location.href = "programacao.html";
             } else {
                 let erroTexto = "Dados inválidos.";
                 if (data && data.detail) {
