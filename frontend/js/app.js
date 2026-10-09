@@ -1,5 +1,5 @@
 import { Auth } from "./auth.js";
-import "./sidebar.js";
+import "./components/sidebar.js";
 
 import * as bootstrap from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/+esm";
 window.bootstrap = bootstrap;
