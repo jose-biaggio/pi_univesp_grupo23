@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -22,179 +23,113 @@
 
         <app-sidebar active="programacao"></app-sidebar>
 
-        <!-- CONTEÚDO -->
-
         <main class="content">
 
-            <!-- TOPO -->
-
             <header class="topbar">
-
                 <div class="topbar-left">
-
                     <button id="toggleSidebar" class="menu-toggle">
-
                         <i class="fa-solid fa-bars"></i>
-
                     </button>
 
                     <div>
-
                         <h1>Programação de Manutenção</h1>
-
-                        <p>
-                            Visualize e acompanhe as ordens programadas
-                        </p>
-
+                        <p>Visualize e acompanhe as ordens programadas</p>
                     </div>
-
                 </div>
 
                 <div class="user-box">
-
                     <i class="fa-solid fa-user-circle"></i>
-
                     <span id="usuarioLogadoNome">Carregando...</span>
-
                     <button id="btnSair" class="btn btn-outline-secondary btn-sm ms-2" title="Sair do sistema">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
-
                 </div>
-
             </header>
 
             <!-- KPIs -->
-
             <section class="row g-4 mb-4">
 
                 <div class="col-lg-3 col-md-6">
-
                     <div class="card kpi">
-
                         <h6>Ordens Programadas</h6>
-
                         <h2 id="kpiOrdensProgramadas">0</h2>
-
                     </div>
-
                 </div>
 
                 <div class="col-lg-3 col-md-6">
-
                     <div class="card kpi">
-
                         <h6>Horas Programadas</h6>
-
                         <h2 id="kpiHorasProgramadas">0 h</h2>
-
                     </div>
-
                 </div>
 
                 <div class="col-lg-3 col-md-6">
-
                     <div class="card kpi">
-
                         <h6>Horas Apontadas</h6>
-
                         <h2 id="kpiHorasApontadas">0 h</h2>
-
                     </div>
-
                 </div>
 
                 <div class="col-lg-3 col-md-6">
-
                     <div class="card kpi">
-
                         <h6>Aderência</h6>
-
                         <h2 id="kpiAderencia">0%</h2>
-
                     </div>
-
                 </div>
 
             </section>
 
             <!-- FILTROS -->
-
             <div class="card mb-4">
-
                 <div class="card-body">
-
                     <div class="row g-3">
 
                         <div class="col-md-4">
-
                             <input type="text" id="filtroPesquisa" class="form-control"
                                 placeholder="Pesquisar por número ou descrição">
-
                         </div>
 
                         <div class="col-md-3">
-
                             <select id="filtroStatus" class="form-select">
-
                                 <option value="">Todos os Status</option>
                                 <option value="NAO_APONTADO">Não Apontado</option>
                                 <option value="EM_ANDAMENTO">Em Andamento</option>
                                 <option value="CONCLUIDO">Concluído</option>
                                 <option value="CANCELADO">Cancelado</option>
-
                             </select>
-
                         </div>
 
                         <div class="col-md-3">
-
                             <select id="filtroCentro" class="form-select">
-
                                 <option value="">Todos os Centros</option>
-
                             </select>
-
                         </div>
 
                         <div class="col-md-2">
-
                             <button id="btnAtualizarFiltro" class="btn btn-primary w-100">
-
                                 <i class="fa-solid fa-filter me-1"></i> Filtrar
-
                             </button>
-
                         </div>
 
                     </div>
-
                 </div>
-
             </div>
 
             <!-- TABELA -->
-
             <div class="card">
-
                 <div class="card-header d-flex justify-content-between align-items-center">
-
                     <strong>Ordens de Manutenção</strong>
 
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovaOrdem">
+                    <button class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalNovaOrdem">
                         <i class="fa-solid fa-plus me-1"></i> Nova Ordem
                     </button>
-
                 </div>
 
                 <div class="table-responsive">
-
                     <table class="table table-hover align-middle">
-
                         <thead>
-
                             <tr>
-
                                 <th>Ordem</th>
                                 <th>Descrição</th>
                                 <th>Operação</th>
@@ -203,43 +138,41 @@
                                 <th>Data Programada</th>
                                 <th>Status</th>
                                 <th>Ações</th>
-
                             </tr>
-
                         </thead>
 
                         <tbody id="tabelaProgramacao">
-
                             <!-- Dados carregados via JS -->
-
                         </tbody>
-
                     </table>
-
                 </div>
-
             </div>
 
         </main>
-
     </div>
 
     <!-- MODAL NOVA ORDEM -->
     <div class="modal fade" id="modalNovaOrdem" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="fa-solid fa-clipboard-list me-2"></i>Nova Ordem de Manutenção</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    <h5 class="modal-title">
+                        <i class="fa-solid fa-clipboard-list me-2"></i>
+                        Nova Ordem de Manutenção
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Fechar"></button>
                 </div>
+
                 <form id="formNovaOrdem">
                     <div class="modal-body">
                         <div id="msgErroModal" class="alert alert-danger d-none" role="alert"></div>
 
                         <div class="mb-3">
                             <label for="campoNumeroOrdem" class="form-label">Número da Ordem *</label>
-                            <input type="text" id="campoNumeroOrdem" class="form-control" placeholder="Ex: 10001"
-                                required>
+                            <input type="text" id="campoNumeroOrdem" class="form-control"
+                                placeholder="Ex: 10001" required>
                         </div>
 
                         <div class="mb-3">
@@ -251,8 +184,10 @@
                         <div class="row g-2 mb-3">
                             <div class="col-md-6">
                                 <label for="campoOperacao" class="form-label">Operação</label>
-                                <input type="text" id="campoOperacao" class="form-control" value="0010" required>
+                                <input type="text" id="campoOperacao" class="form-control"
+                                    value="0010" required>
                             </div>
+
                             <div class="col-md-6">
                                 <label for="campoCentroTrabalho" class="form-label">Centro de Trabalho *</label>
                                 <input type="text" id="campoCentroTrabalho" class="form-control"
@@ -263,22 +198,122 @@
                         <div class="row g-2 mb-3">
                             <div class="col-md-6">
                                 <label for="campoHorasProgramadas" class="form-label">Horas Programadas *</label>
-                                <input type="number" id="campoHorasProgramadas" class="form-control" placeholder="Ex: 8"
-                                    required>
+                                <input type="number" id="campoHorasProgramadas" class="form-control"
+                                    placeholder="Ex: 8" min="0" step="0.1" required>
                             </div>
+
                             <div class="col-md-6">
                                 <label for="campoDataProgramada" class="form-label">Data Programada *</label>
-                                <input type="datetime-local" id="campoDataProgramada" class="form-control" required>
+                                <input type="datetime-local" id="campoDataProgramada"
+                                    class="form-control" required>
                             </div>
                         </div>
                     </div>
+
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+
                         <button type="submit" id="btnSalvarOrdem" class="btn btn-primary">
                             <i class="fa-solid fa-floppy-disk me-1"></i> Salvar Ordem
                         </button>
                     </div>
                 </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR ORDEM -->
+    <div class="modal fade" id="modalEditarOrdem" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fa-solid fa-pen me-2"></i>
+                        Editar Ordem de Manutenção
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Fechar"></button>
+                </div>
+
+                <form id="formEditarOrdem">
+                    <div class="modal-body">
+                        <div id="msgErroEdicao" class="alert alert-danger d-none"
+                            role="alert"></div>
+
+                        <div class="mb-3">
+                            <label for="editarNumeroOrdem" class="form-label">
+                                Número da Ordem
+                            </label>
+                            <input type="text" id="editarNumeroOrdem"
+                                class="form-control" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editarDescricao" class="form-label">
+                                Descrição da Atividade *
+                            </label>
+                            <input type="text" id="editarDescricao"
+                                class="form-control" required>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                                <label for="editarOperacao" class="form-label">
+                                    Operação *
+                                </label>
+                                <input type="text" id="editarOperacao"
+                                    class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="editarCentroTrabalho" class="form-label">
+                                    Centro de Trabalho *
+                                </label>
+                                <input type="text" id="editarCentroTrabalho"
+                                    class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                                <label for="editarHorasProgramadas" class="form-label">
+                                    Horas Programadas *
+                                </label>
+                                <input type="number" id="editarHorasProgramadas"
+                                    class="form-control" min="0" step="0.1" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="editarDataProgramada" class="form-label">
+                                    Data Programada *
+                                </label>
+                                <input type="datetime-local" id="editarDataProgramada"
+                                    class="form-control" required>
+                            </div>
+                        </div>
+
+                        <small class="text-muted">
+                            As alterações são temporárias e não serão enviadas ao banco de dados.
+                        </small>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+
+                        <button type="submit" id="btnSalvarEdicao" class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk me-1"></i>
+                            Salvar alterações
+                        </button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
@@ -286,5 +321,4 @@
     <script type="module" src="../js/programacao.js"></script>
 
 </body>
-
 </html>

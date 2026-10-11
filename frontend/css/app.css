@@ -425,3 +425,369 @@ app-sidebar:not(:defined) {
     background: #0d6efd;
     color: #fff;
 }
+
+
+/* =========================================================
+   MANUTENÇÃO SYNC — AJUSTES DE RESPONSIVIDADE
+   Desktop, notebook, tablet e smartphone
+   ========================================================= */
+
+/* Evita que margens, tabelas e componentes alarguem a página */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-width: 0;
+    scroll-behavior: smooth;
+}
+
+body {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+    max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+    max-width: 100%;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1 1 auto;
+    width: 0;
+    min-width: 0;
+    padding: clamp(12px, 2vw, 28px);
+}
+
+/* Cabeçalho */
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 24px;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1 1 320px;
+    min-width: 0;
+}
+
+.topbar-left > div {
+    min-width: 0;
+}
+
+.topbar h1 {
+    font-size: clamp(1.25rem, 2.2vw, 1.9rem);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    margin-bottom: 6px;
+}
+
+.topbar p {
+    margin-bottom: 0;
+    overflow-wrap: anywhere;
+}
+
+.user-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+#usuarioLogadoNome {
+    overflow-wrap: anywhere;
+}
+
+.menu-toggle {
+    flex: 0 0 auto;
+    min-width: 42px;
+    min-height: 42px;
+}
+
+/* Indicadores */
+.kpi {
+    height: 100%;
+    min-width: 0;
+    padding: clamp(14px, 2vw, 22px);
+    overflow-wrap: anywhere;
+}
+
+.kpi h6 {
+    font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+    line-height: 1.4;
+}
+
+.kpi h2 {
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    overflow-wrap: anywhere;
+}
+
+/* Cartões e filtros */
+.card {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.card-body {
+    min-width: 0;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+#filtroPesquisa,
+#filtroStatus,
+#filtroCentro,
+#btnAtualizarFiltro {
+    width: 100%;
+    min-height: 44px;
+}
+
+#filtroPesquisa {
+    min-width: 0;
+}
+
+/* Tabela: somente a tabela rola horizontalmente */
+.table-responsive {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive > .table {
+    width: 100%;
+    min-width: 760px;
+    margin-bottom: 0;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+.table th {
+    white-space: nowrap;
+}
+
+.table td .btn {
+    min-height: 36px;
+}
+
+/* Modais e formulários */
+.modal-dialog {
+    width: auto;
+    max-width: min(600px, calc(100% - 32px));
+    margin: 16px auto;
+}
+
+.modal-content {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.modal-header,
+.modal-footer {
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.modal-title {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.modal-body {
+    max-height: calc(100dvh - 180px);
+    overflow-y: auto;
+}
+
+.modal-body .row > [class*="col-"] {
+    min-width: 0;
+}
+
+/* Tablet e telas menores */
+@media (max-width: 991.98px) {
+    .content {
+        padding: 18px;
+    }
+
+    .topbar {
+        align-items: flex-start;
+    }
+
+    .topbar-left {
+        flex-basis: 100%;
+    }
+
+    .user-box {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .kpi {
+        padding: 16px;
+    }
+}
+
+/* Smartphones */
+@media (max-width: 575.98px) {
+    .content {
+        padding: 12px;
+    }
+
+    .topbar {
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .topbar-left {
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .topbar h1 {
+        font-size: 1.25rem;
+    }
+
+    .topbar p {
+        font-size: 0.875rem;
+    }
+
+    .user-box {
+        justify-content: flex-start;
+        font-size: 0.9rem;
+    }
+
+    /* Reduz os espaçamentos das linhas Bootstrap */
+    .content .row {
+        --bs-gutter-x: 0.75rem;
+        --bs-gutter-y: 0.75rem;
+    }
+
+    .content .row.mb-4 {
+        margin-bottom: 1rem !important;
+    }
+
+    .kpi {
+        padding: 14px;
+    }
+
+    .kpi h6 {
+        font-size: 0.82rem;
+    }
+
+    .kpi h2 {
+        font-size: 1.5rem;
+    }
+
+    .card-body {
+        padding: 14px;
+    }
+
+    .card-header {
+        padding: 12px;
+    }
+
+    .card-header .btn {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .form-control,
+    .form-select {
+        min-height: 44px;
+        font-size: 16px;
+    }
+
+    .table-responsive > .table {
+        min-width: 760px;
+        font-size: 0.875rem;
+    }
+
+    .modal-dialog {
+        max-width: calc(100% - 20px);
+        margin: 10px auto;
+    }
+
+    .modal-body {
+        padding: 14px;
+        max-height: calc(100dvh - 150px);
+    }
+
+    .modal-footer {
+        padding: 12px;
+    }
+
+    .modal-footer .btn {
+        flex: 1 1 auto;
+        min-height: 44px;
+    }
+}
+
+/* Smartphones muito estreitos */
+@media (max-width: 360px) {
+    .content {
+        padding: 8px;
+    }
+
+    .topbar h1 {
+        font-size: 1.1rem;
+    }
+
+    .kpi h2 {
+        font-size: 1.3rem;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+}
+
+/* Respeita usuários que preferem menos animações */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
