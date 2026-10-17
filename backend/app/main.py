@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import auth, ordem
+from app.routers import auth, ordem, apontamento
 
 app = FastAPI(
     title="Manutenção Sync API",
@@ -20,6 +20,7 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(ordem.router)
+app.include_router(apontamento.router)
 
 
 @app.get("/api/", tags=["Root"])

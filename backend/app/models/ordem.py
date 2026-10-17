@@ -7,6 +7,7 @@ from app.database import Base
 
 if TYPE_CHECKING:
     from app.models.usuario import Usuario
+    from app.models.apontamento import Apontamento
 
 
 class Ordem(Base):
@@ -27,6 +28,11 @@ class Ordem(Base):
     usuario_criador: Mapped[Usuario | None] = relationship(
         "Usuario",
         back_populates="ordens"
+    )
+    apontamentos: Mapped[list[Apontamento]] = relationship(
+        "Apontamento",
+        back_populates="ordem",
+        cascade="all, delete-orphan",
     )
 
     def __repr__(self) -> str:

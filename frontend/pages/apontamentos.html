@@ -7,9 +7,7 @@
     <title>Apontamentos de Manutenção | Manutenção Sync</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
     <link rel="stylesheet" href="../css/app.css">
 </head>
 
@@ -19,245 +17,196 @@
 
         <app-sidebar active="apontamentos"></app-sidebar>
 
-        <!-- CONTENT -->
-
         <main class="content">
 
             <header class="topbar">
-
                 <div class="topbar-left">
-
                     <button id="toggleSidebar" class="menu-toggle">
                         <i class="fa-solid fa-bars"></i>
                     </button>
-
                     <div>
-
                         <h1>Apontamentos de Manutenção</h1>
-
-                        <p>
-                            Registre e acompanhe os apontamentos das ordens
-                        </p>
-
+                        <p>Registre e acompanhe os apontamentos reais das ordens de manutenção</p>
                     </div>
-
                 </div>
 
                 <div class="user-box">
-
                     <i class="fa-solid fa-bell"></i>
-
                     <span id="usuarioLogadoNome">Carregando...</span>
-
                     <button id="btnSair" class="btn btn-outline-secondary btn-sm ms-2" title="Sair do sistema">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
-
                 </div>
-
             </header>
 
-            <!-- KPIs -->
-
             <section class="row g-4 mb-4">
-
                 <div class="col-md-3">
                     <div class="card kpi">
-                        <h6>Apontamentos Hoje</h6>
-                        <h2>12</h2>
+                        <h6>Total Apontamentos</h6>
+                        <h2 id="kpiTotalApontamentos">0</h2>
                     </div>
                 </div>
-
                 <div class="col-md-3">
                     <div class="card kpi">
                         <h6>Horas Apontadas</h6>
-                        <h2>48 h</h2>
+                        <h2 id="kpiHorasApontadas">0.0 h</h2>
                     </div>
                 </div>
-
                 <div class="col-md-3">
                     <div class="card kpi">
-                        <h6>Ordens Apontadas</h6>
-                        <h2>10</h2>
+                        <h6>Ordens com Apontamento</h6>
+                        <h2 id="kpiOrdensApontadas">0</h2>
                     </div>
                 </div>
-
                 <div class="col-md-3">
                     <div class="card kpi">
-                        <h6>Aderência Diária</h6>
-                        <h2>80%</h2>
+                        <h6>Aderência Média</h6>
+                        <h2 id="kpiAderenciaMedia">0%</h2>
                     </div>
                 </div>
-
             </section>
 
-            <!-- FILTROS -->
-
             <div class="card mb-4">
-
                 <div class="card-body">
-
                     <div class="row g-3">
-
                         <div class="col-md-4">
-
-                            <input type="text" class="form-control" placeholder="Pesquisar ordem">
-
+                            <input type="text" id="filtroPesquisaApontamento" class="form-control"
+                                placeholder="Pesquisar por ordem, descrição ou observação">
                         </div>
-
                         <div class="col-md-3">
-
-                            <select class="form-select">
-
-                                <option>Todos</option>
-                                <option>Concluído</option>
-                                <option>Parcial</option>
-                                <option>Em Andamento</option>
-
+                            <select id="filtroStatusApontamento" class="form-select">
+                                <option value="">Todos os Status</option>
+                                <option value="CONCLUIDO">Concluído</option>
+                                <option value="PARCIAL">Parcial</option>
                             </select>
-
                         </div>
-
                         <div class="col-md-3">
-
-                            <input type="date" class="form-control">
-
+                            <input type="date" id="filtroDataApontamento" class="form-control">
                         </div>
-
                         <div class="col-md-2">
-
-                            <button class="btn btn-primary w-100">
-
-                                Atualizar
-
+                            <button id="btnAtualizarFiltroApontamento" class="btn btn-primary w-100">
+                                <i class="fa-solid fa-arrows-rotate me-1"></i> Atualizar
                             </button>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
 
-            <!-- TABELA -->
-
             <div class="card">
-
                 <div class="card-header d-flex justify-content-between align-items-center">
-
-                    <strong>Apontamentos de Manutenção</strong>
-
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalApontamento">
-
-                        <i class="fa-solid fa-plus"></i>
-
-                        Novo Apontamento
-
+                    <strong>Apontamentos Registrados</strong>
+                    <button class="btn btn-primary" id="btnAbrirModalNovoApontamento">
+                        <i class="fa-solid fa-plus me-1"></i> Novo Apontamento
                     </button>
-
                 </div>
 
                 <div class="table-responsive">
-
-                    <table class="table table-hover align-middle">
-
+                    <table class="table table-hover align-middle mb-0">
                         <thead>
-
                             <tr>
-
                                 <th>Data</th>
                                 <th>Ordem</th>
-                                <th>Descrição</th>
+                                <th>Descrição da Ordem</th>
                                 <th>Operação</th>
                                 <th>Centro</th>
                                 <th>Horas</th>
                                 <th>Operador</th>
                                 <th>Status</th>
+                                <th>Observação</th>
                                 <th>Ações</th>
-
                             </tr>
-
                         </thead>
-
                         <tbody id="tabelaApontamentos">
-
+                            <tr>
+                                <td colspan="10" class="text-center py-4">
+                                    <i class="fa-solid fa-spinner fa-spin me-2"></i> Carregando apontamentos...
+                                </td>
+                            </tr>
                         </tbody>
-
                     </table>
-
                 </div>
-
             </div>
 
         </main>
 
     </div>
 
-    <!-- MODAL -->
-
+    <!-- MODAL NOVO APONTAMENTO -->
     <div class="modal fade" id="modalApontamento" tabindex="-1">
-
         <div class="modal-dialog">
-
             <div class="modal-content">
-
-                <div class="modal-header">
-
-                    <h5>Novo Apontamento</h5>
-
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
-
-                </div>
-
-                <div class="modal-body">
-
-                    <div class="mb-3">
-
-                        <label>Ordem</label>
-
-                        <input type="text" class="form-control">
-
+                <form id="formNovoApontamento">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Novo Apontamento de Manutenção</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
+                    <div class="modal-body">
+                        <div id="msgErroApontamento" class="alert alert-danger d-none" role="alert"></div>
 
-                    <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="selectOrdemApontamento" class="form-label">Ordem de Manutenção *</label>
+                            <select id="selectOrdemApontamento" class="form-select" required>
+                                <option value="">Selecione uma ordem...</option>
+                            </select>
+                        </div>
 
-                        <label>Horas Apontadas</label>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="inputDataApontamento" class="form-label">Data e Hora *</label>
+                                <input type="datetime-local" id="inputDataApontamento" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputHorasApontadas" class="form-label">Horas Apontadas *</label>
+                                <input type="number" id="inputHorasApontadas" class="form-control" step="0.5" min="0.1"
+                                    placeholder="Ex: 4.0" required>
+                            </div>
+                        </div>
 
-                        <input type="number" class="form-control">
+                        <div class="mb-3">
+                            <label for="selectStatusApontamento" class="form-label">Status da Execução *</label>
+                            <select id="selectStatusApontamento" class="form-select" required>
+                                <option value="CONCLUIDO">Concluído</option>
+                                <option value="PARCIAL">Parcial</option>
+                            </select>
+                        </div>
 
+                        <div class="mb-3">
+                            <label for="inputObservacaoApontamento" class="form-label">Observação Técnica</label>
+                            <textarea id="inputObservacaoApontamento" class="form-control" rows="3"
+                                placeholder="Detalhes do serviço executado, peças trocadas, etc."></textarea>
+                        </div>
                     </div>
-
-                    <div class="mb-3">
-
-                        <label>Observação</label>
-
-                        <textarea class="form-control"></textarea>
-
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="btnSalvarApontamento" class="btn btn-primary">
+                            <i class="fa-solid fa-save me-1"></i> Salvar
+                        </button>
                     </div>
-
-                </div>
-
-                <div class="modal-footer">
-
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">
-
-                        Cancelar
-
-                    </button>
-
-                    <button class="btn btn-primary">
-
-                        Salvar
-
-                    </button>
-
-                </div>
-
+                </form>
             </div>
-
         </div>
+    </div>
 
+    <!-- MODAL EXCLUIR APONTAMENTO -->
+    <div class="modal fade" id="modalExcluirApontamento" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza de que deseja excluir este apontamento? Esta ação removerá as horas apontadas
+                        associadas à ordem.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="btnConfirmarExcluirApontamento" class="btn btn-danger">
+                        <i class="fa-solid fa-trash me-1"></i> Excluir
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="../js/apontamentos.js"></script>

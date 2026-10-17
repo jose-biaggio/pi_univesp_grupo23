@@ -27,16 +27,11 @@ let ordensCarregadas = [];
 
 const edicoesLocais = new Map();
 
-// Guarda as ordens ocultadas pelo usuário nesta sessão.
 const ordensExcluidasLocais = new Set();
 
 let ordemEmEdicao = null;
 let chaveOrdemEmEdicao = null;
 let chaveOrdemPendenteExclusao = null;
-
-// --------------------------------------------------
-// MODAL DE EDIÇÃO
-// --------------------------------------------------
 
 const modalEditarEl = document.getElementById("modalEditarOrdem");
 const formEditarOrdem = document.getElementById("formEditarOrdem");
@@ -46,10 +41,6 @@ const modalEditar = modalEditarEl && bootstrap
     ? bootstrap.Modal.getOrCreateInstance(modalEditarEl)
     : null;
 
-// --------------------------------------------------
-// MODAL DE EXCLUSÃO
-// --------------------------------------------------
-
 const modalExcluirEl = document.getElementById("modalExcluirOrdem");
 const numeroOrdemExcluir = document.getElementById("numeroOrdemExcluir");
 const btnConfirmarExclusao = document.getElementById("confirmarExclusaoOrdem");
@@ -58,12 +49,9 @@ const modalExcluir = modalExcluirEl && bootstrap
     ? bootstrap.Modal.getOrCreateInstance(modalExcluirEl)
     : null;
 
-// Retorna um identificador consistente para cada ordem.
 function obterChaveOrdem(ordem) {
     return String(ordem.id ?? ordem.numero_ordem);
 }
-
-// Converte uma data para o formato aceito pelo input datetime-local.
 function converterParaDataLocal(valor) {
     if (!valor) return "";
 
@@ -75,10 +63,6 @@ function converterParaDataLocal(valor) {
 
     return data.toISOString().slice(0, 16);
 }
-
-// --------------------------------------------------
-// CARREGAR ORDENS
-// --------------------------------------------------
 
 async function carregarOrdens() {
     if (!tabela) return;
@@ -135,10 +119,6 @@ async function carregarOrdens() {
         `;
     }
 }
-
-// --------------------------------------------------
-// RENDERIZAR TABELA
-// --------------------------------------------------
 
 function renderizarTabela(ordens) {
     if (!tabela) return;
@@ -213,10 +193,6 @@ function renderizarTabela(ordens) {
     atualizarKPIs(ordensExibidas);
 }
 
-// --------------------------------------------------
-// CLIQUES NA TABELA: EDITAR E EXCLUIR
-// --------------------------------------------------
-
 tabela?.addEventListener("click", (event) => {
     const botaoEditar = event.target.closest(".btn-editar-ordem");
     const botaoExcluir = event.target.closest(".btn-excluir-ordem");
@@ -235,10 +211,6 @@ tabela?.addEventListener("click", (event) => {
         );
     }
 });
-
-// --------------------------------------------------
-// ABRIR MODAL DE EDIÇÃO
-// --------------------------------------------------
 
 function abrirModalEdicao(chave) {
     const ordemOriginal = ordensCarregadas.find(
@@ -287,10 +259,6 @@ function abrirModalEdicao(chave) {
         alert("Não foi possível abrir o formulário de edição.");
     }
 }
-
-// --------------------------------------------------
-// SALVAR EDIÇÃO SOMENTE NO FRONTEND
-// --------------------------------------------------
 
 formEditarOrdem?.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -362,10 +330,6 @@ formEditarOrdem?.addEventListener("submit", (event) => {
     chaveOrdemEmEdicao = null;
 });
 
-// --------------------------------------------------
-// ABRIR MODAL DE EXCLUSÃO
-// --------------------------------------------------
-
 function abrirModalExclusao(chave, numeroOrdem) {
     if (!modalExcluir) {
         console.error("Modal de exclusão não encontrado no HTML.");
@@ -383,9 +347,6 @@ function abrirModalExclusao(chave, numeroOrdem) {
     modalExcluir.show();
 }
 
-// --------------------------------------------------
-// CONFIRMAR EXCLUSÃO SOMENTE NO FRONTEND
-// --------------------------------------------------
 
 btnConfirmarExclusao?.addEventListener("click", () => {
     if (chaveOrdemPendenteExclusao === null) return;
@@ -419,11 +380,7 @@ modalExcluirEl?.addEventListener("hidden.bs.modal", () => {
     chaveOrdemPendenteExclusao = null;
 });
 
-// --------------------------------------------------
-// ATUALIZAR INDICADORES
-// --------------------------------------------------
-
-function atualizarKPIs(ordens) {
+async function atualizarKPIs(ordens) {
     const totalOrdens = ordens.length;
 
     const totalHoras = ordens.reduce(
@@ -431,6 +388,24 @@ function atualizarKPIs(ordens) {
             acumulado + (Number(ordem.horas_programadas) || 0),
         0
     );
+
+    let totalHorasApontadas = 0;
+    try {
+        const resp = await apiFetch("/apontamentos/?limit=500");
+        if (resp.ok) {
+            const apontamentos = await resp.json();
+            const idsOrdensVisiveis = new Set(ordens.map(o => o.id));
+            totalHorasApontadas = apontamentos
+                .filter(a => idsOrdensVisiveis.has(a.ordem_id))
+                .reduce((acc, a) => acc + (Number(a.horas_apontadas) || 0), 0);
+        }
+    } catch (err) {
+        console.warn("Aviso ao carregar apontamentos para KPIs:", err);
+    }
+
+    const aderencia = totalHoras > 0
+        ? Math.min(100, Math.round((totalHorasApontadas / totalHoras) * 100))
+        : 0;
 
     if (kpiOrdens) {
         kpiOrdens.textContent = totalOrdens;
@@ -441,17 +416,13 @@ function atualizarKPIs(ordens) {
     }
 
     if (kpiHorasApont) {
-        kpiHorasApont.textContent = "0.0 h";
+        kpiHorasApont.textContent = `${totalHorasApontadas.toFixed(1)} h`;
     }
 
     if (kpiAderencia) {
-        kpiAderencia.textContent = "0%";
+        kpiAderencia.textContent = `${aderencia}%`;
     }
 }
-
-// --------------------------------------------------
-// ATUALIZAR FILTRO DE CENTROS
-// --------------------------------------------------
 
 function atualizarCentrosDisponiveis(ordens) {
     if (!filtroCentro) return;
@@ -479,11 +450,6 @@ function atualizarCentrosDisponiveis(ordens) {
             `)
             .join("");
 }
-
-// --------------------------------------------------
-// CADASTRAR NOVA ORDEM
-// Esta operação continua usando a API existente.
-// --------------------------------------------------
 
 const formNovaOrdem = document.getElementById("formNovaOrdem");
 const msgErroModal = document.getElementById("msgErroModal");
@@ -607,10 +573,6 @@ if (formNovaOrdem) {
     });
 }
 
-// --------------------------------------------------
-// EVENTOS DOS FILTROS
-// --------------------------------------------------
-
 btnAtualizarFiltro?.addEventListener("click", carregarOrdens);
 
 filtroStatus?.addEventListener("change", carregarOrdens);
@@ -623,5 +585,4 @@ filtroPesquisa?.addEventListener("keyup", event => {
     }
 });
 
-// Carrega os dados ao abrir a página.
 carregarOrdens();
