@@ -131,7 +131,6 @@
 
     </div>
 
-    <!-- MODAL NOVO APONTAMENTO -->
     <div class="modal fade" id="modalApontamento" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -157,8 +156,8 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="inputHorasApontadas" class="form-label">Horas Apontadas *</label>
-                                <input type="number" id="inputHorasApontadas" class="form-control" step="0.5" min="0.1"
-                                    placeholder="Ex: 4.0" required>
+                                <input type="number" id="inputHorasApontadas" class="form-control" min="0" step="0.1"
+                                    placeholder="Ex: 4" required>
                             </div>
                         </div>
 
@@ -187,7 +186,61 @@
         </div>
     </div>
 
-    <!-- MODAL EXCLUIR APONTAMENTO -->
+    <div class="modal fade" id="modalEditarApontamento" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fa-solid fa-pen-to-square me-2"></i>Editar Apontamento
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formEditarApontamento">
+                    <div class="modal-body">
+                        <div id="msgErroEditarApontamento" class="alert alert-danger d-none" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label for="editarInfoOrdem" class="form-label">Ordem de Manutenção</label>
+                            <input type="text" id="editarInfoOrdem" class="form-control" readonly disabled>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="editarDataApontamento" class="form-label">Data e Hora *</label>
+                                <input type="datetime-local" id="editarDataApontamento" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editarHorasApontadas" class="form-label">Horas Apontadas *</label>
+                                <input type="number" id="editarHorasApontadas" class="form-control" min="0" step="0.1"
+                                    placeholder="Ex: 4" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editarSelectStatusApontamento" class="form-label">Status da Execução *</label>
+                            <select id="editarSelectStatusApontamento" class="form-select" required>
+                                <option value="CONCLUIDO">Concluído</option>
+                                <option value="PARCIAL">Parcial</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editarObservacaoApontamento" class="form-label">Observação Técnica</label>
+                            <textarea id="editarObservacaoApontamento" class="form-control" rows="3"
+                                placeholder="Detalhes do serviço executado, peças trocadas, etc."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="btnSalvarEdicaoApontamento" class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Salvar alterações
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="modalExcluirApontamento" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

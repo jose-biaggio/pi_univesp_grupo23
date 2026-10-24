@@ -28,9 +28,6 @@ def criar_ordem(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Ordem de manutenção com número '{ordem_in.numero_ordem}' já existe.",
         )
-    print(">>> DEBUG:", db)
-    print(">>> DEBUG:", ordem_in)
-    print(">>> DEBUG:", current_user.id)
 
     return crud_ordem.criar_ordem(db, ordem_in, usuario_id=current_user.id)
 

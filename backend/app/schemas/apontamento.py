@@ -15,6 +15,13 @@ class ApontamentoCreate(ApontamentoBase):
     pass
 
 
+class ApontamentoUpdate(BaseModel):
+    data_apontamento: Optional[datetime] = Field(None, description="Data e hora da execução do apontamento")
+    horas_apontadas: Optional[float] = Field(None, gt=0, description="Horas apontadas (deve ser maior que 0)")
+    status: Optional[str] = Field(None, max_length=30, description="Status do apontamento (ex: PARCIAL, CONCLUIDO)")
+    observacao: Optional[str] = Field(None, max_length=255, description="Observação técnica ou descrição da atividade")
+
+
 class ApontamentoResponse(ApontamentoBase):
     model_config = ConfigDict(from_attributes=True)
 

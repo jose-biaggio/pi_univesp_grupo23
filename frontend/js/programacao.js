@@ -25,10 +25,6 @@ const kpiAderencia = document.getElementById("kpiAderencia");
 let centrosConhecidos = new Set();
 let ordensCarregadas = [];
 
-const edicoesLocais = new Map();
-
-const ordensExcluidasLocais = new Set();
-
 let ordemEmEdicao = null;
 let chaveOrdemEmEdicao = null;
 let chaveOrdemPendenteExclusao = null;
@@ -44,6 +40,7 @@ const modalEditar = modalEditarEl && bootstrap
 const modalExcluirEl = document.getElementById("modalExcluirOrdem");
 const numeroOrdemExcluir = document.getElementById("numeroOrdemExcluir");
 const btnConfirmarExclusao = document.getElementById("confirmarExclusaoOrdem");
+const msgErroExclusao = document.getElementById("msgErroExclusao");
 
 const modalExcluir = modalExcluirEl && bootstrap
     ? bootstrap.Modal.getOrCreateInstance(modalExcluirEl)
@@ -97,10 +94,7 @@ async function carregarOrdens() {
 
         const ordens = await response.json();
 
-        // Mantém ocultas as ordens excluídas apenas visualmente.
-        ordensCarregadas = ordens.filter(ordem =>
-            !ordensExcluidasLocais.has(obterChaveOrdem(ordem))
-        );
+        ordensCarregadas = ordens;
 
         renderizarTabela(ordensCarregadas);
         atualizarCentrosDisponiveis(ordensCarregadas);
@@ -136,12 +130,7 @@ function renderizarTabela(ordens) {
         return;
     }
 
-    const ordensExibidas = ordens.map(ordem => ({
-        ...ordem,
-        ...(edicoesLocais.get(obterChaveOrdem(ordem)) || {})
-    }));
-
-    tabela.innerHTML = ordensExibidas.map(ordem => {
+    tabela.innerHTML = ordens.map(ordem => {
         const chave = obterChaveOrdem(ordem);
 
         return `
@@ -190,20 +179,18 @@ function renderizarTabela(ordens) {
         `;
     }).join("");
 
-    atualizarKPIs(ordensExibidas);
+    atualizarKPIs(ordens);
 }
 
 tabela?.addEventListener("click", (event) => {
     const botaoEditar = event.target.closest(".btn-editar-ordem");
     const botaoExcluir = event.target.closest(".btn-excluir-ordem");
 
-    // Abrir modal de edição.
     if (botaoEditar) {
         abrirModalEdicao(botaoEditar.dataset.chave);
         return;
     }
 
-    // Abrir modal de confirmação de exclusão.
     if (botaoExcluir) {
         abrirModalExclusao(
             botaoExcluir.dataset.chave,
@@ -222,11 +209,7 @@ function abrirModalEdicao(chave) {
         return;
     }
 
-    ordemEmEdicao = {
-        ...ordemOriginal,
-        ...(edicoesLocais.get(String(chave)) || {})
-    };
-
+    ordemEmEdicao = ordemOriginal;
     chaveOrdemEmEdicao = String(chave);
 
     document.getElementById("editarNumeroOrdem").value =
@@ -260,10 +243,10 @@ function abrirModalEdicao(chave) {
     }
 }
 
-formEditarOrdem?.addEventListener("submit", (event) => {
+formEditarOrdem?.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    if (!ordemEmEdicao || chaveOrdemEmEdicao === null) return;
+    if (!ordemEmEdicao || !ordemEmEdicao.id) return;
 
     const descricao =
         document.getElementById("editarDescricao").value.trim();
@@ -286,10 +269,10 @@ formEditarOrdem?.addEventListener("submit", (event) => {
         !centroTrabalho ||
         !dataProgramada ||
         !Number.isFinite(horasProgramadas) ||
-        horasProgramadas < 0
+        horasProgramadas <= 0
     ) {
         msgErroEdicao.textContent =
-            "Preencha todos os campos corretamente. As horas não podem ser negativas.";
+            "Preencha todos os campos corretamente. As horas devem ser maiores que zero.";
 
         msgErroEdicao.classList.remove("d-none");
         return;
@@ -305,29 +288,53 @@ formEditarOrdem?.addEventListener("submit", (event) => {
         return;
     }
 
-    const alteracoes = {
-        descricao,
-        operacao,
-        centro_trabalho: centroTrabalho,
-        horas_programadas: horasProgramadas,
-        data_programada: dataConvertida.toISOString()
-    };
+    const btnSalvarEdicao = document.getElementById("btnSalvarEdicao");
+    if (btnSalvarEdicao) {
+        btnSalvarEdicao.disabled = true;
+        btnSalvarEdicao.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin me-1"></i> Salvando...';
+    }
 
-    edicoesLocais.set(chaveOrdemEmEdicao, alteracoes);
+    try {
+        const payload = {
+            descricao,
+            operacao,
+            centro_trabalho: centroTrabalho,
+            horas_programadas: horasProgramadas,
+            data_programada: dataConvertida.toISOString(),
+        };
 
-    ordensCarregadas = ordensCarregadas.map(ordem =>
-        obterChaveOrdem(ordem) === chaveOrdemEmEdicao
-            ? { ...ordem, ...alteracoes }
-            : ordem
-    );
+        const response = await apiFetch(`/ordens/${ordemEmEdicao.id}`, {
+            method: "PUT",
+            body: JSON.stringify(payload),
+        });
 
-    renderizarTabela(ordensCarregadas);
-    atualizarCentrosDisponiveis(ordensCarregadas);
+        const data = await response.json().catch(() => ({}));
 
-    modalEditar?.hide();
-
-    ordemEmEdicao = null;
-    chaveOrdemEmEdicao = null;
+        if (response.ok) {
+            modalEditar?.hide();
+            ordemEmEdicao = null;
+            chaveOrdemEmEdicao = null;
+            await carregarOrdens();
+        } else {
+            let msg = "Erro ao atualizar a ordem de manutenção.";
+            if (data?.detail) {
+                msg = typeof data.detail === "string" ? data.detail : JSON.stringify(data.detail);
+            }
+            msgErroEdicao.textContent = msg;
+            msgErroEdicao.classList.remove("d-none");
+        }
+    } catch (err) {
+        console.error("Erro ao salvar ordem:", err);
+        msgErroEdicao.textContent = "Erro de conexão ao salvar alterações.";
+        msgErroEdicao.classList.remove("d-none");
+    } finally {
+        if (btnSalvarEdicao) {
+            btnSalvarEdicao.disabled = false;
+            btnSalvarEdicao.innerHTML =
+                '<i class="fa-solid fa-floppy-disk me-1"></i> Salvar alterações';
+        }
+    }
 });
 
 function abrirModalExclusao(chave, numeroOrdem) {
@@ -344,38 +351,67 @@ function abrirModalExclusao(chave, numeroOrdem) {
             numeroOrdem || chaveOrdemPendenteExclusao;
     }
 
+    if (msgErroExclusao) {
+        msgErroExclusao.classList.add("d-none");
+        msgErroExclusao.textContent = "";
+    }
+
     modalExcluir.show();
 }
 
-
-btnConfirmarExclusao?.addEventListener("click", () => {
+btnConfirmarExclusao?.addEventListener("click", async () => {
     if (chaveOrdemPendenteExclusao === null) return;
 
-    const chave = chaveOrdemPendenteExclusao;
-
-    // Registra a ordem para que não reapareça ao filtrar
-    // ou atualizar os dados durante esta sessão.
-    ordensExcluidasLocais.add(chave);
-
-    // Descarta uma eventual edição local da mesma ordem.
-    edicoesLocais.delete(chave);
-
-    // Remove a ordem da lista exibida.
-    ordensCarregadas = ordensCarregadas.filter(
-        ordem => obterChaveOrdem(ordem) !== chave
+    const ordemParaExcluir = ordensCarregadas.find(
+        o => obterChaveOrdem(o) === chaveOrdemPendenteExclusao
     );
 
-    // Atualiza tabela e indicadores.
-    renderizarTabela(ordensCarregadas);
-    atualizarCentrosDisponiveis(ordensCarregadas);
+    if (!ordemParaExcluir || !ordemParaExcluir.id) {
+        if (msgErroExclusao) {
+            msgErroExclusao.textContent = "Ordem selecionada não encontrada para exclusão.";
+            msgErroExclusao.classList.remove("d-none");
+        }
+        return;
+    }
 
-    // Fecha o modal e limpa a seleção.
-    modalExcluir?.hide();
-    chaveOrdemPendenteExclusao = null;
+    btnConfirmarExclusao.disabled = true;
+    btnConfirmarExclusao.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin me-1"></i> Excluindo...';
+
+    try {
+        const response = await apiFetch(`/ordens/${ordemParaExcluir.id}`, {
+            method: "DELETE",
+        });
+
+        if (response.ok || response.status === 204) {
+            modalExcluir?.hide();
+            chaveOrdemPendenteExclusao = null;
+            await carregarOrdens();
+        } else {
+            const errData = await response.json().catch(() => ({}));
+            const msg = errData?.detail || "Falha ao excluir a ordem no servidor.";
+            if (msgErroExclusao) {
+                msgErroExclusao.textContent = msg;
+                msgErroExclusao.classList.remove("d-none");
+            } else {
+                alert(msg);
+            }
+        }
+    } catch (err) {
+        console.error("Erro ao excluir ordem:", err);
+        if (msgErroExclusao) {
+            msgErroExclusao.textContent = "Erro de conexão ao tentar excluir a ordem.";
+            msgErroExclusao.classList.remove("d-none");
+        } else {
+            alert("Erro de conexão ao tentar excluir a ordem.");
+        }
+    } finally {
+        btnConfirmarExclusao.disabled = false;
+        btnConfirmarExclusao.innerHTML =
+            '<i class="fa-solid fa-trash me-1"></i> Excluir ordem';
+    }
 });
 
-// Se o usuário cancelar ou fechar o modal,
-// nenhuma ordem será removida.
 modalExcluirEl?.addEventListener("hidden.bs.modal", () => {
     chaveOrdemPendenteExclusao = null;
 });

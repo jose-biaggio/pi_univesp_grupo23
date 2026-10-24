@@ -4,7 +4,11 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.usuario import Usuario
-from app.schemas.apontamento import ApontamentoCreate, ApontamentoResponse
+from app.schemas.apontamento import (
+    ApontamentoCreate,
+    ApontamentoResponse,
+    ApontamentoUpdate,
+)
 from app.security import get_current_user
 from app.crud import apontamento as crud_apontamento
 from app.crud import ordem as crud_ordem
@@ -76,6 +80,26 @@ def obter_apontamento(
             detail="Apontamento não encontrado.",
         )
     return apontamento
+
+
+@router.put(
+    "/{apontamento_id}",
+    response_model=ApontamentoResponse,
+    summary="Atualizar dados de um apontamento de manutenção",
+)
+def atualizar_apontamento(
+    apontamento_id: int,
+    apontamento_in: ApontamentoUpdate,
+    db: Session = Depends(get_db),
+    current_user: Usuario = Depends(get_current_user),
+):
+    db_apontamento = crud_apontamento.obter_apontamento_por_id(db, apontamento_id)
+    if not db_apontamento:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Apontamento não encontrado.",
+        )
+    return crud_apontamento.atualizar_apontamento(db, db_apontamento, apontamento_in)
 
 
 @router.delete(

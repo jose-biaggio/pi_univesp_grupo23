@@ -8,19 +8,16 @@
 
     <title>Programação de Manutenção | Manutenção Sync</title>
 
-    <!-- Bootstrap -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
-    <!-- Font Awesome -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     >
 
-    <!-- CSS do projeto -->
     <link rel="stylesheet" href="../css/app.css">
 </head>
 
@@ -30,10 +27,8 @@
 
         <app-sidebar active="programacao"></app-sidebar>
 
-        <!-- CONTEÚDO PRINCIPAL -->
         <main class="content">
 
-            <!-- CABEÇALHO -->
             <header class="topbar">
 
                 <div class="topbar-left">
@@ -66,7 +61,6 @@
 
             </header>
 
-            <!-- INDICADORES -->
             <section class="row g-4 mb-4">
 
                 <div class="col-lg-3 col-md-6">
@@ -99,7 +93,6 @@
 
             </section>
 
-            <!-- FILTROS -->
             <section class="card mb-4">
 
                 <div class="card-body">
@@ -160,7 +153,6 @@
 
             </section>
 
-            <!-- TABELA DE ORDENS -->
             <section class="card">
 
                 <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -214,9 +206,6 @@
 
     </div>
 
-    <!-- ==========================================
-         MODAL: NOVA ORDEM
-    =========================================== -->
     <div
         class="modal fade"
         id="modalNovaOrdem"
@@ -375,9 +364,6 @@
 
     </div>
 
-    <!-- ==========================================
-         MODAL: EDITAR ORDEM
-    =========================================== -->
     <div
         class="modal fade"
         id="modalEditarOrdem"
@@ -501,10 +487,6 @@
 
                         </div>
 
-                        <small class="text-muted">
-                            As alterações são temporárias e não serão enviadas ao banco de dados.
-                        </small>
-
                     </div>
 
                     <div class="modal-footer">
@@ -535,9 +517,6 @@
 
     </div>
 
-    <!-- ==========================================
-         MODAL: CONFIRMAR EXCLUSÃO
-    =========================================== -->
     <div
         class="modal fade"
         id="modalExcluirOrdem"
@@ -567,8 +546,14 @@
 
                 <div class="modal-body">
 
+                    <div
+                        id="msgErroExclusao"
+                        class="alert alert-danger d-none"
+                        role="alert"
+                    ></div>
+
                     <p>
-                        Tem certeza de que deseja excluir esta ordem de manutenção?
+                        Tem certeza de que deseja excluir permanentemente esta ordem de manutenção?
                     </p>
 
                     <div class="alert alert-warning">
@@ -578,10 +563,12 @@
                         <strong id="numeroOrdemExcluir">—</strong>
                     </div>
 
-                    <small class="text-muted">
-                        A ordem será removida apenas da visualização atual.
-                        Os dados do banco de dados não serão alterados.
-                    </small>
+                    <div class="alert alert-danger py-2 mb-0">
+                        <small>
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i>
+                            <strong>Atenção:</strong> Esta ação removerá a ordem definitivamente do banco de dados e todos os apontamentos vinculados a ela serão excluídos em cascata.
+                        </small>
+                    </div>
 
                 </div>
 
@@ -612,7 +599,6 @@
 
     </div>
 
-    <!-- JavaScript do projeto -->
     <script type="module" src="../js/programacao.js"></script>
 
 </body>

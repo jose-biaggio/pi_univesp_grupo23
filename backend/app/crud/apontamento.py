@@ -3,7 +3,22 @@ from sqlalchemy.orm import Session
 
 from app.models.apontamento import Apontamento
 from app.models.ordem import Ordem
-from app.schemas.apontamento import ApontamentoCreate
+from app.schemas.apontamento import ApontamentoCreate, ApontamentoUpdate
+
+
+def _recalcular_status_ordem(db: Session, ordem_id: int) -> None:
+    """Recalcula reativamente o status da ordem com base nos apontamentos vinculados."""
+    ordem = db.query(Ordem).filter(Ordem.id == ordem_id).first()
+    if not ordem:
+        return
+
+    apontamentos = db.query(Apontamento).filter(Apontamento.ordem_id == ordem_id).all()
+    if not apontamentos:
+        ordem.status = "NAO_APONTADO"
+    elif any(a.status and a.status.upper() == "CONCLUIDO" for a in apontamentos):
+        ordem.status = "CONCLUIDO"
+    else:
+        ordem.status = "EM_ANDAMENTO"
 
 
 def obter_apontamento_por_id(db: Session, apontamento_id: int) -> Optional[Apontamento]:
@@ -47,20 +62,31 @@ def criar_apontamento(
         observacao=apontamento_in.observacao,
     )
     db.add(db_apontamento)
+    db.flush()
+    _recalcular_status_ordem(db, apontamento_in.ordem_id)
+    db.commit()
+    db.refresh(db_apontamento)
+    return db_apontamento
 
-    # Atualização reativa do status da ordem
-    ordem = db.query(Ordem).filter(Ordem.id == apontamento_in.ordem_id).first()
-    if ordem:
-        if apontamento_in.status.upper() == "CONCLUIDO":
-            ordem.status = "CONCLUIDO"
-        elif ordem.status == "NAO_APONTADO":
-            ordem.status = "EM_ANDAMENTO"
 
+def atualizar_apontamento(
+    db: Session,
+    db_apontamento: Apontamento,
+    apontamento_in: ApontamentoUpdate,
+) -> Apontamento:
+    update_data = apontamento_in.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(db_apontamento, field, value)
+    db.flush()
+    _recalcular_status_ordem(db, db_apontamento.ordem_id)
     db.commit()
     db.refresh(db_apontamento)
     return db_apontamento
 
 
 def excluir_apontamento(db: Session, db_apontamento: Apontamento) -> None:
+    ordem_id = db_apontamento.ordem_id
     db.delete(db_apontamento)
+    db.flush()
+    _recalcular_status_ordem(db, ordem_id)
     db.commit()
