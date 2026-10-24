@@ -15,7 +15,14 @@ DB_PASSWORD = os.getenv("DB_PASSWORD", "sync_password")
 DB_NAME = os.getenv("DB_NAME", "manutencao_sync")
 
 DEFAULT_DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8mb4"
-DATABASE_URL = os.getenv("DATABASE_URL", DEFAULT_DATABASE_URL)
+DATABASE_URL = os.getenv("DATABASE_URL") or os.getenv("MYSQL_URL") or DEFAULT_DATABASE_URL
+
+if DATABASE_URL.startswith("mysql://"):
+    DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://", 1)
+
+if "charset=" not in DATABASE_URL:
+    separator = "&" if "?" in DATABASE_URL else "?"
+    DATABASE_URL = f"{DATABASE_URL}{separator}charset=utf8mb4"
 
 engine = create_engine(
     DATABASE_URL,
