@@ -19,10 +19,10 @@ DB_NAME = os.getenv("DB_NAME") or os.getenv("MYSQLDATABASE") or "manutencao_sync
 encoded_password = quote_plus(DB_PASSWORD)
 DEFAULT_DATABASE_URL = f"mysql+pymysql://{DB_USER}:{encoded_password}@{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8mb4"
 
-raw_url = (os.getenv("DATABASE_URL") or os.getenv("MYSQL_URL") or "").strip()
+raw_url = (os.getenv("DATABASE_URL") or os.getenv("MYSQL_URL") or os.getenv("MYSQL_PRIVATE_URL") or "").strip()
 
-# Se não foi informada ou é um template não resolvido pelo Railway (ex: "${{...}}")
-if not raw_url or raw_url.startswith("${{") or "://" not in raw_url:
+# Se não foi informada, ou não possui protocolo (://), ou é template não resolvido (${{...}})
+if not raw_url or "://" not in raw_url or raw_url.startswith("${{"):
     DATABASE_URL = DEFAULT_DATABASE_URL
 else:
     DATABASE_URL = raw_url
