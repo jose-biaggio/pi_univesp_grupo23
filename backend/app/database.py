@@ -1,5 +1,6 @@
 import os
 import logging
+from urllib.parse import quote_plus
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import declarative_base, sessionmaker
 from dotenv import load_dotenv
@@ -8,21 +9,29 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-DB_HOST = os.getenv("DB_HOST", "db")
-DB_PORT = os.getenv("DB_PORT", "3306")
-DB_USER = os.getenv("DB_USER", "sync_user")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "sync_password")
-DB_NAME = os.getenv("DB_NAME", "manutencao_sync")
+# Suporte a variáveis DB_* e às variáveis nativas do Railway (MYSQL*)
+DB_HOST = os.getenv("DB_HOST") or os.getenv("MYSQLHOST") or "db"
+DB_PORT = os.getenv("DB_PORT") or os.getenv("MYSQLPORT") or "3306"
+DB_USER = os.getenv("DB_USER") or os.getenv("MYSQLUSER") or "sync_user"
+DB_PASSWORD = os.getenv("DB_PASSWORD") or os.getenv("MYSQLPASSWORD") or "sync_password"
+DB_NAME = os.getenv("DB_NAME") or os.getenv("MYSQLDATABASE") or "manutencao_sync"
 
-DEFAULT_DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8mb4"
-DATABASE_URL = os.getenv("DATABASE_URL") or os.getenv("MYSQL_URL") or DEFAULT_DATABASE_URL
+encoded_password = quote_plus(DB_PASSWORD)
+DEFAULT_DATABASE_URL = f"mysql+pymysql://{DB_USER}:{encoded_password}@{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8mb4"
 
-if DATABASE_URL.startswith("mysql://"):
-    DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://", 1)
+raw_url = (os.getenv("DATABASE_URL") or os.getenv("MYSQL_URL") or "").strip()
 
-if "charset=" not in DATABASE_URL:
-    separator = "&" if "?" in DATABASE_URL else "?"
-    DATABASE_URL = f"{DATABASE_URL}{separator}charset=utf8mb4"
+# Se não foi informada ou é um template não resolvido pelo Railway (ex: "${{...}}")
+if not raw_url or raw_url.startswith("${{") or "://" not in raw_url:
+    DATABASE_URL = DEFAULT_DATABASE_URL
+else:
+    DATABASE_URL = raw_url
+    if DATABASE_URL.startswith("mysql://"):
+        DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://", 1)
+
+    if "charset=" not in DATABASE_URL:
+        separator = "&" if "?" in DATABASE_URL else "?"
+        DATABASE_URL = f"{DATABASE_URL}{separator}charset=utf8mb4"
 
 engine = create_engine(
     DATABASE_URL,
